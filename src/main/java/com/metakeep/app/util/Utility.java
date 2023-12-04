@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.metakeep.app.bean.AuditBean;
+import com.metakeep.app.config.AuditStoreConfiguration;
 
 
 @Component
@@ -22,6 +23,9 @@ public class Utility {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	private AuditStoreConfiguration configuration;
+	
 	public String auditApiCall(AuditBean auditBean) {
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -29,7 +33,7 @@ public class Utility {
 
         HttpEntity<AuditBean> requestEntity = new HttpEntity<>(auditBean, headers);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8081/audit", requestEntity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(configuration.getHost()+"/audit", requestEntity, String.class);
 
         return null;
 		
